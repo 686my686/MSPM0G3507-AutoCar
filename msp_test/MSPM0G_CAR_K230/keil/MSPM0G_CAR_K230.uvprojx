@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\source\third_party\CMSIS\Core\Include;..\..\source;..\BSP;\..\..\source\ti\driverlib\m0p\sysctl;..\..\MSPM0G_CAR_APP;..\APP;..\BSP\Motor;..\BSP\OLED;..\BSP\ultrasonic;..\BSP\K230;..\BSP\usart2;..\..\MSPM0G_CAR_K230;..\..\source;..\..\source\ti;..\..\source\third_party\CMSIS\Core\Include</IncludePath>
+              <IncludePath>..\..\source\third_party\CMSIS\Core\Include;..\..\source;..\BSP;..\..\source\ti\driverlib\m0p\sysctl;..\APP;..\BSP\Motor;..\BSP\OLED;..\BSP\ultrasonic;..\BSP\IR;..\BSP\control;..\BSP\task;..\BSP\mpu6050;..\BSP\eMPL;..\BSP\filter;..\BSP\kalman;..\BSP\flash;..\..\source;..\..\source\ti;..\..\source\third_party\CMSIS\Core\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
