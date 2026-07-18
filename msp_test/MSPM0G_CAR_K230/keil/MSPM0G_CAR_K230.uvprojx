@@ -455,11 +455,6 @@
               <FilePath>..\BSP\bsp_RGB.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_infrared_light.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\BSP\bsp_infrared_light.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_ir_receiver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp_ir_receiver.c</FilePath>
@@ -490,54 +485,54 @@
               <FilePath>..\BSP\ultrasonic\bsp_ultrasonic.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart2.c</FileName>
+              <FileName>bsp_ir.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\usart2\bsp_usart2.c</FilePath>
+              <FilePath>..\BSP\IR\bsp_ir.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart2.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\usart2\bsp_usart2.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_usart3.c</FileName>
+              <FileName>task.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\usart2\bsp_usart3.c</FilePath>
+              <FilePath>..\BSP\task\task.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart3.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\usart2\bsp_usart3.h</FilePath>
-            </File>
-            <File>
-              <FileName>yb_protocol.c</FileName>
+              <FileName>control.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\K230\yb_protocol.c</FilePath>
+              <FilePath>..\BSP\control\control.c</FilePath>
             </File>
             <File>
-              <FileName>yb_protocol.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\K230\yb_protocol.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_k230_control.c</FileName>
+              <FileName>bsp_mpu6050.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\K230\bsp_k230_control.c</FilePath>
+              <FilePath>..\BSP\mpu6050\bsp_mpu6050.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_k230_control.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\K230\bsp_k230_control.h</FilePath>
-            </File>
-            <File>
-              <FileName>bsp_usart_voice.c</FileName>
+              <FileName>get_mpu6050.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\BSP\bsp_usart_voice.c</FilePath>
+              <FilePath>..\BSP\mpu6050\get_mpu6050.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_usart_voice.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\bsp_usart_voice.h</FilePath>
+              <FileName>inv_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\eMPL\inv_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>Filter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\filter\Filter.c</FilePath>
+            </File>
+            <File>
+              <FileName>kalman.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\kalman\kalman.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_flash_W25Q64.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\flash\bsp_flash_W25Q64.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -560,9 +555,9 @@
               <FilePath>..\APP\bsp_PID_motor.c</FilePath>
             </File>
             <File>
-              <FileName>app_ir_track.c</FileName>
+              <FileName>app_irtracking_eight.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\APP\app_ir_track.c</FilePath>
+              <FilePath>..\APP\app_irtracking_eight.c</FilePath>
             </File>
           </Files>
         </Group>

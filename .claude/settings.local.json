@@ -38,7 +38,8 @@
       "Bash(cp 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\9、程序源码汇总MSP小车\\\\6、智能小车实验\\\\10.24年自动化驾驶\\(H题\\)\\\\MSPM0G_CAR_Htest_8/APP/bsp_PID_motor.c' 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\msp备份\\\\msp_test\\\\msp_test\\\\MSPM0G_CAR_K230/APP/')",
       "Bash(cp 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\9、程序源码汇总MSP小车\\\\6、智能小车实验\\\\10.24年自动化驾驶\\(H题\\)\\\\MSPM0G_CAR_Htest_8/empty.syscfg' 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\msp备份\\\\msp_test\\\\msp_test\\\\MSPM0G_CAR_K230/')",
       "Bash(cp 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\9、程序源码汇总MSP小车\\\\6、智能小车实验\\\\10.24年自动化驾驶\\(H题\\)\\\\MSPM0G_CAR_Htest_8/ti_msp_dl_config.c' 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\msp备份\\\\msp_test\\\\msp_test\\\\MSPM0G_CAR_K230/')",
-      "Bash(cp 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\9、程序源码汇总MSP小车\\\\6、智能小车实验\\\\10.24年自动化驾驶\\(H题\\)\\\\MSPM0G_CAR_Htest_8/ti_msp_dl_config.h' 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\msp备份\\\\msp_test\\\\msp_test\\\\MSPM0G_CAR_K230/')"
+      "Bash(cp 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\9、程序源码汇总MSP小车\\\\6、智能小车实验\\\\10.24年自动化驾驶\\(H题\\)\\\\MSPM0G_CAR_Htest_8/ti_msp_dl_config.h' 'C:\\\\Users\\\\Administrator\\\\Desktop\\\\msp备份\\\\msp_test\\\\msp_test\\\\MSPM0G_CAR_K230/')",
+      "Bash(git push *)"
     ]
   }
 }
