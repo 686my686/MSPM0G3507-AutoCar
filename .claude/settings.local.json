@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "Bash(python -c ' *)",
+      "Bash(/c/Python*/python --version)",
+      "Bash(where python *)",
+      "Bash(pandoc *)",
+      "Bash(soffice --headless --convert-to txt \"C:\\\\Users\\\\Administrator\\\\Desktop\\\\24赛题.docx\" --outdir /tmp/)",
+      "Read(//tmp/**)",
+      "Read(//c/Users/Administrator/AppData/Local/Programs/Python//**)",
+      "Bash(ls /c/Python*)",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python3*/python.exe --version)",
+      "Bash(/c/Users/Administrator/AppData/Local/Programs/Python/Python312/python *)",
+      "WebFetch(domain:www.yahboom.com)",
+      "Bash(gh auth *)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)"
+    ]
+  }
+}

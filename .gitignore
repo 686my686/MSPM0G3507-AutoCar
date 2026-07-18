@@ -1,0 +1,40 @@
+# Build outputs
+OBJ/
+Listings/
+*.o
+*.d
+*.obj
+*.lst
+*.hex
+*.bin
+*.axf
+*.elf
+*.out
+*.map
+*.htm
+*.build_log.htm
+
+# Keil
+*.uvgui.*
+*.uvguix.*
+*.uvoptx
+JLinkLog.txt
+*.scvd
+
+# CCS
+.DS_Store
+.settings/
+.ccsproject
+.cproject
+.project
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
