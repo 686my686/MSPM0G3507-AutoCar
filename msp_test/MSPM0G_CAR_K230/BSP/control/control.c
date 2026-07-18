@@ -94,7 +94,7 @@ void mode_1(void)
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(53 ,53,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 //		set_pid_target(&yawpid, first_yaw);
 
 		mode1_stop= LineCheck();
@@ -154,7 +154,7 @@ else if(mode2_flag==1&&mode2_stop==0&&Line_flag==0&&yaw_flag==0)
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(53 ,53,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode2_stop= LineCheck();	
 	}
 	
@@ -253,7 +253,7 @@ else if(mode3_flag==1&&mode3_stop==0&&Line_flag==0&&yaw_flag==0)
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(53 ,53,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode3_stop= LineCheck();	
 	}
 	
@@ -337,7 +337,7 @@ else if(mode3_flag==1&&mode3_stop==0&&Line_flag==1&&yaw_flag==1)
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out2=Dir_PID(balance_yaw);
 	
-		Set_PID_Motor(50 ,50,yaw_out2);
+		Set_PID_Motor(120 ,120,yaw_out2);
 //		encoder_odometry_flag = 1;
 		line_stop=LineCheck();
 		if(odometry_sum>60&&line_stop==1)
@@ -457,7 +457,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==0
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(53 ,53,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -541,7 +541,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==1&&yaw_flag==1&&mode4_Circle==0
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out2=Dir_PID(balance_yaw);
 	
-		Set_PID_Motor(50 ,50,yaw_out2);
+		Set_PID_Motor(120 ,120,yaw_out2);
 //		encoder_odometry_flag = 1;
 		line_stop=LineCheck();
 		if(odometry_sum>60&&line_stop==1)
@@ -622,7 +622,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==1
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(50 ,50,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -701,7 +701,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==1&&yaw_flag==1&&mode4_Circle==1
 
 		yaw_out2=Dir_PID(balance_yaw);
 	
-		Set_PID_Motor(50 ,50,yaw_out2);
+		Set_PID_Motor(120 ,120,yaw_out2);
 		
 		encoder_odometry_flag = 1;
 		line_stop=LineCheck();
@@ -780,7 +780,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==2
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(50 ,50,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -859,7 +859,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==1&&yaw_flag==1&&mode4_Circle==2
 
 		yaw_out2=Dir_PID(balance_yaw);
 	
-		Set_PID_Motor(50 ,50,yaw_out2);
+		Set_PID_Motor(120 ,120,yaw_out2);
 		encoder_odometry_flag = 1;
 		line_stop=LineCheck();
 		if(odometry_sum>50&&line_stop==1)
@@ -937,7 +937,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==3
 	
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(50 ,50,yaw_out);
+		Set_PID_Motor(120 ,120,yaw_out);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -1013,7 +1013,7 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==1&&yaw_flag==1&&mode4_Circle==3
 
 		yaw_out2=Dir_PID(balance_yaw);
 	
-		Set_PID_Motor(50 ,50,yaw_out2);
+		Set_PID_Motor(120 ,120,yaw_out2);
 		encoder_odometry_flag = 1;
 		line_stop=LineCheck();
 		if(odometry_sum>50&&line_stop==1)
@@ -1085,19 +1085,18 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==3&&mode4_Circle==4
 //����ѡ��ģʽ
 uint8_t switch_mode()
 {
-	uint8_t	select_mode = 0, key_num = 0, key2_val = 0;
+	uint8_t	select_mode = 0, key_num = 0;
 	OLED_Clear();
 	OLED_ShowString(0, 0, "Select Mode:", 8, 1);
 	OLED_ShowNum(80,0,select_mode,1,24,1);
 	OLED_Refresh();
 	while(1){
 		key_num = KEY_Scan();
-		key2_val = get_key();  /* 备用检测，防止KEY_Scan漏检K2 */
-		if(key_num || key2_val){
+		if(key_num){
 			if(key_num == KEY1_PRES){
 				select_mode +=1;
 			}
-			else if(key_num == KEY2_PRES || key2_val == KEY2_PRES){
+			else if(key_num == KEY2_PRES){
 				OLED_ShowString(92,0,"OK!!!",8,1);
 				OLED_Refresh();
 				delay_ms(700);

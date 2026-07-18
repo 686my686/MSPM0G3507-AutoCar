@@ -13,7 +13,7 @@ extern volatile float Second_yaw;
 
 
 #define yaw_p  (-10.0f)
-#define yaw_i  (0.0f)
+#define yaw_i  (-0.05)
 #define yaw_d  (00.0f) 
 
 extern uint8_t mode3_stop ;
