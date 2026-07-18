@@ -16,7 +16,15 @@
       "Bash(gh auth *)",
       "Bash(git init *)",
       "Bash(git config *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m 'Initial commit: MSPM0G3507 autonomous driving car project *)",
+      "Bash(winget install *)",
+      "Bash(\"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" auth status)",
+      "Read(//c/Program Files/GitHub CLI/**)",
+      "Read(//c/Program Files \\(x86\\)/GitHub CLI/**)",
+      "Bash(C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe repo *)",
+      "Bash(winget uninstall *)",
+      "Bash(git remote *)"
     ]
   }
 }

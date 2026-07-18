@@ -34,6 +34,9 @@ JLinkLog.txt
 *~
 .vscode/
 .idea/
+.claude/worktrees/
+.claude/agents/
+*.output.jsonl
 
 # OS
 Thumbs.db
