@@ -48,45 +48,7 @@ void rgb_SetRGB(unsigned char LedId, unsigned long red, unsigned long green, uns
 
 
 
-void breathe_rgb()
-{
-			   int i;
-	
-		Control_RGB_ALL(Blue_RGB);
-    for(i=1;i<25;i++)
-    {
 
-			RGB_PIN_L() ;  
-			delay_ms(20*i);
-			RGB_PIN_H()    ; 
-			delay_ms(20*i);
-			
-			
-//  unsigned long Color=BLACK+i;
-			
-
-
-			
-//      delay_ms(4);
-    }
-//    delay(500);           //turn the RGB LED red smoth
-
-//    for(i=0;i<256;i++)
-//    {
-//     
-//        delay(4);
-//    }
-//    delay(500);           //turn the RGB LED green smoth
-//  
-//    for(i=0;i<256;i++)
-//    {
-//        setColor(0,0,i);
-//        delay(4);
-//    }
-//    delay_ms(100);
-
-
-	}
 /******************************************************************
  * 函 数 名 称：rgb_SendArray
  * 函 数 说 明：发送彩灯数据

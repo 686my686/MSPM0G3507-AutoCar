@@ -99,41 +99,41 @@ int puts(const char* _ptr)
 
 
 
-//串口的中断服务函数
-void UART_0_INST_IRQHandler(void)
-{
-	uint8_t receivedData = 0;
-	
-	//如果产生了串口中断
-	switch( DL_UART_getPendingInterrupt(UART_0_INST) )
-	{
-		case DL_UART_IIDX_RX://如果是接收中断
-			
-			// 接收发送过来的数据保存
-			receivedData = DL_UART_Main_receiveData(UART_0_INST);
+////串口的中断服务函数
+//void UART_0_INST_IRQHandler(void)
+//{
+//	uint8_t receivedData = 0;
+//	
+//	//如果产生了串口中断
+//	switch( DL_UART_getPendingInterrupt(UART_0_INST) )
+//	{
+//		case DL_UART_IIDX_RX://如果是接收中断
+//			
+//			// 接收发送过来的数据保存
+//			receivedData = DL_UART_Main_receiveData(UART_0_INST);
 
-			// 检查缓冲区是否已满
-			if (recv0_length < RE_0_BUFF_LEN_MAX - 1)
-			{
-				recv0_buff[recv0_length++] = receivedData;
+//			// 检查缓冲区是否已满
+//			if (recv0_length < RE_0_BUFF_LEN_MAX - 1)
+//			{
+//				recv0_buff[recv0_length++] = receivedData;
 
-				// 将保存的数据再发送出去，不想回传可以注释掉
-				uart0_send_char(receivedData);
-			}
-			else
-			{
-				recv0_length = 0;
-			}
+//				// 将保存的数据再发送出去，不想回传可以注释掉
+//				uart0_send_char(receivedData);
+//			}
+//			else
+//			{
+//				recv0_length = 0;
+//			}
 
-			// 标记接收标志
-			recv0_flag = 1;
-		
-			break;
-		
-		default://其他的串口中断
-			break;
-	}
-}
+//			// 标记接收标志
+//			recv0_flag = 1;
+//		
+//			break;
+//		
+//		default://其他的串口中断
+//			break;
+//	}
+//}
 
 
 

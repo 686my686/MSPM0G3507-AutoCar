@@ -152,8 +152,33 @@ else{
 }
 
 
+//void Pid_Control_RGB()
+//{	
+//	
+//	int RGB_flag=0;
+//	
+//	if(RGB_flag==0){
+//	PID_TypeDef RGBpid;
+//	PID_param_init(&RGBpid);
+//	set_pid_target(&RGBpid, 0);
+//	
+//	set_p_i_d(&RGBpid, RGB_p, 0, RGB_d);
+//	RGB_flag=1;
+//	}
+//	if(RGB_flag==1)
+//	{
 
 
+
+
+
+//}
+//	
+//	set_pid_target(&RGBpid, Blue_RGB);
+//	
+//	Control_RGB_ALL(Red_RGB);
+//	
+//}
 void Control_Breathe_RGB_IR()
 {
 	
@@ -165,7 +190,14 @@ void Control_Breathe_RGB_IR()
 	if(IR_RGB_flag%2==0)
 	{
 for(i=255;i>1;i--){
-
+//	 Control_RGB_ALL(Red_RGB);
+//    delay_ms(i);
+//		Control_RGB_ALL(OFF);
+//		delay_ms(i);
+//		Control_RGB_ALL(Blue_RGB);
+//		delay_ms(i);
+//	Control_RGB_ALL(OFF);
+//		delay_ms(i);
 Control_RGB_ALL(Red_RGB);
 	delay_ms(i);
 Control_RGB_ALL(Red_RGB);

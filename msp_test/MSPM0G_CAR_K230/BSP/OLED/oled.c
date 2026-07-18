@@ -333,6 +333,7 @@ void OLED_ShowNum(u8 x,u8 y,u32 num,u8 len,u8 size1,u8 mode)
   }
 }
 
+
 //显示带有负数的数字
 void OLED_ShowSNum(uint8_t x,uint8_t y,int num,uint8_t len,uint8_t size1,uint8_t mode)
 {
@@ -358,8 +359,6 @@ void OLED_ShowSNum(uint8_t x,uint8_t y,int num,uint8_t len,uint8_t size1,uint8_t
 			}
 	}
 }
-
-
 //显示汉字
 //x,y:起点坐标
 //num:汉字对应的序号

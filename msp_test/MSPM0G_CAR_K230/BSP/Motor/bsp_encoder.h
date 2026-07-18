@@ -20,6 +20,9 @@ void encoder_init(void);
 ENCODER_DIR get_encoderL_dir(void);
 ENCODER_DIR get_encoderR_dir(void);
 
+
+
+void Get_Odometry(void);
 void Encoder_Get_ALL(int *Encoder_all);
 void Encoder_Get_Temp(int *Encoder_temp);
 void encoder_update(void);

@@ -7,12 +7,7 @@
 
 uint8_t RGB_flag ;
 
-//#define 	Red_RGB     '2'//按键前 Before pressing the button
-//#define 	Green_RGB    '3'//按键后 After pressing the button
-//#define 	Blue_RGB    '4'//按键左 Left button
-////#define 	Yellow_RGB   '4'//按键右 Right button
-////#define 	Cyan_RGB    '5'//按键停 Button stop
-//#define 	OFF    '8'//按键停 Button stop
+
 
 extern uint8_t ProtocolString[80];//引入备份数据区 Introducing backup data area
 static void set_ALL_RGB_COLOR(unsigned long color)

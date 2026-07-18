@@ -73,6 +73,21 @@ void encoder_update(void)
 }
 
 
+void Get_Odometry(void)
+{
+    if(encoder_odometry_flag)
+    {
+		float average_speed = 0;
+
+       //odometry_sum += (Encoder_Offset[1] + Encoder_Offset[3])/2;
+		average_speed = ((motorL_encoder.temp_count +motorR_encoder.temp_count) / 2);  //mm/s
+		odometry_sum+=average_speed;     //mm
+    //odometry_sum += ((Encoder_Offset[0] + Encoder_Offset[1] + Encoder_Offset[2] + Encoder_Offset[3]) / 4);
+		//	printf("%f  ",odometry_sum);
+    }
+}
+
+
 
 #if Motor_Switch
 //外部中断处理函数

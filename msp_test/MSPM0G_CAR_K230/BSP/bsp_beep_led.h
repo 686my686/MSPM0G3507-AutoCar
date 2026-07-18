@@ -11,4 +11,5 @@ void CLOSE_MCULED(void);
 void Buzzer_open_state(void);
 void Buzzer_close_state(void);
 
+void BEEP_RGB();
 #endif

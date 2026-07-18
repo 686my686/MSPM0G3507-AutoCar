@@ -17,7 +17,7 @@
 //    uint8_t  Ring_data[RINGBUFF_LEN];
 //}RingBuff_t;
 
-
+void USART_Init(void);
 void uart0_send_char(char ch);
 void uart0_send_string(char* str);
 

@@ -24,10 +24,10 @@ void TIMER_20ms_INST_IRQHandler(void)
     //20ms归零中断触发
 	if( DL_TimerA_getPendingInterrupt(TIMER_20ms_INST) == DL_TIMER_IIDX_ZERO )
 	{
-
-				encoder_update();
-        Motion_Handle(); //小车测速
-
+		//编码器更新
+//				encoder_update();
+//        Motion_Handle(); //小车测速
+	
         gled_cnt++;
         if(gled_cnt>=10)
         {
@@ -40,7 +40,23 @@ void TIMER_20ms_INST_IRQHandler(void)
 }
 
 
+//void TIMER_1ms_INST_IRQHandler(void)
+//{
+//    switch( DL_TimerG_getPendingInterrupt(TIMER_1ms_INST) )
+//    {
+//        case DL_TIMER_IIDX_ZERO://如果是0溢出中断  If it is a 0 overflow interrupt
+////            Buzzer_Handle();
+//            systick_counter++; // 每1ms自动+1      +1 per sencond
+//            break;
 
+//        default:
+//            break;
+//    }
+//    
+//}
 
-
+//uint32_t Get_Time(void)    
+//{
+//    return systick_counter;
+//}
 

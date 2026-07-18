@@ -5,17 +5,24 @@
 
 #define PI (3.1415926f)
 
-
+//#define PID_MOTOR_KP (1.5f)
+//#define PID_MOTOR_KI (0.08f)
+//#define PID_MOTOR_KD (0.5f)
 
 //#define PID_DEF_KP (-000.8f) //0.8
-//#define PID_DEF_KI (-0.06f) //0.06
-//#define PID_DEF_KD (-00.8f) //0.5
+//#define PID_DEF_KI (-0.04f) //0.06
+//#define PID_DEF_KD (-001.6f) //0.5
+
 
 #define PID_DEF_KP (-000.8f) //0.8
-#define PID_DEF_KI (-0.036f) //0.06
+#define PID_DEF_KI (-0.030f) //0.06
 #define PID_DEF_KD (-000.8f) //0.5
 
 
+
+//#define PID_DEF_KP (1.2f) //0.8
+//#define PID_DEF_KI (0.000f) //0.06
+//#define PID_DEF_KD (0.0f) //0.5
 
 #define PID_YAW_DEF_KP (5.0)
 #define PID_YAW_DEF_KI (0.00)
@@ -41,13 +48,7 @@
 
 #define k230_p3  (000.3f)
 #define k230_i3  (0.00f)
-#define k230_d3  (00.001f) 
-
-
-#define k230_p4  (000.5f)
-#define k230_i4  (0.00f)
-#define k230_d4  (00.00f) 
-
+#define k230_d3  (0.001f) 
 #define RIGHT	 (-90)
 #define LEFT	(90)
 #define BACK	 (180)

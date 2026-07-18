@@ -45,6 +45,4 @@ void rgb_GetRGB(unsigned char LedId, unsigned long i);
 
 void delay_0_25us(void);
 
-
-void breathe_rgb();
 #endif

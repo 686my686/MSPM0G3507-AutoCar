@@ -3,6 +3,10 @@
 
 
 PID_TypeDef  veer_pid;
+
+PID_TypeDef  k230_pid;
+
+
 int8_t veer = 0;
 
 static int get_offset_yaw = 0;
@@ -15,7 +19,9 @@ volatile float kal_rpid_out;
 PID_t pid_motor[2];
 
 
-
+volatile	float Yawpid_out ;
+//	float SetPoint ;
+//volatile	float err;
 volatile	float now_yawout;
 volatile	int16_t target_yaw;
 
@@ -51,7 +57,16 @@ void PID_param_init(PID_TypeDef *pid)
 
 
 
+void Set_PID_Veer(void)
+{
+	PID_TypeDef veerpid;
+	PID_param_init(&veerpid);
+//	set_pid_target(&veerpid, target_yaw);
+	set_p_i_d(&veerpid, veer_p, 0, veer_d);
 
+
+
+}
 /**
  * @brief       pid闭环控制计算
  * @param       *PID：PID结构体变量地址
@@ -217,7 +232,8 @@ float PID_Calc_One_Motor(uint8_t motor_id, float now_speed)
 {
     if (motor_id >= MAX_MOTOR)
         return 0;
-
+//    return PID_Incre_Calc(&pid_motor[motor_id], now_speed);
+//		motor->speed_pwm[motor_id]=PID_Location_Calc(&pid_motor[motor_id], now_speed);
 		return PID_Location_Calc(&pid_motor[motor_id], now_speed);
 		
 		
@@ -282,8 +298,6 @@ void PID_Clear_Motor(uint8_t motor_id)
 }
 
 
-//带偏航角校准的PID //PID with yaw angle calibration
- 
 void Wheel_Yaw_PID(float yaw,float l_motor,float r_motor)
 {
     float yaw_offset = PID_Yaw_Calc(yaw);
@@ -404,14 +418,16 @@ void PID_Yaw_Set_Parm(float kp, float ki, float kd)
     pid_Yaw.Derivative = kd;
 }
 
-// Set the PID encoder target value and the steering ring output value 设置PID编码器目标值以及转向环输出值
+
 void Set_PID_Motor(float set_l ,float set_r,float turn_out)
 {
 		
 		
 		l_pid_out =	PID_Calc_One_Motor(0, set_l);
 		r_pid_out =	PID_Calc_One_Motor(1, set_r);
-
+//		kal_lpid_out=KalmanFilter(&kfp_line,l_pid_out);
+//		kal_rpid_out=KalmanFilter(&kfp_line,r_pid_out);
+//		PWM_Control_Car(kal_lpid_out , kal_rpid_out );
 		PWM_Control_Car(l_pid_out+turn_out , r_pid_out-turn_out );
 
 }
@@ -419,5 +435,65 @@ void Set_PID_Motor(float set_l ,float set_r,float turn_out)
 
 
 
+
+
+//void turn_pid(int16_t dir, int8_t v)
+//{
+//	
+//	float Yawpid_out ;
+////	float SetPoint ;
+//	uint16_t err;
+//	float my_yaw;
+//	my_yaw = yaw + 180;
+////	Get_EulerAngles();
+//	int16_t target_yaw = get_targ(my_yaw, dir);
+////	int16_t target_yaw = get_targ(my_yaw, __dir);
+
+//	PID_Yaw_Reset(my_yaw);
+
+////	Yawpid_out= PID_Yaw_Calc(__v);
+//	
+//	
+////	if(__dir == BACK){
+////		PID_Yaw_Set_Parm(0.6, 0, 2);
+////	}
+
+//	
+////	while(1){
+//			err = calc_min_angle_direction(my_yaw, target_yaw);
+//			PID_Yaw_Calc(target_yaw-err);
+////		PID_Calculate(&veerpid, target_yaw-err);
+//		//printf("yaw=%f, targ=%d \r\n", yaw, target_yaw);
+//		if(dir == RIGHT){
+////			set_pid_target(&l_pid, veerpid.PID_out);
+////			PID_Calc_One_Motor(0, Yawpid_out);
+////			PID_Calc_One_Motor(1, 0);
+//			Set_PID_Motor(Yawpid_out ,0);
+////			set_pid_target(&r_pid, 0);
+//		}else if(dir == LEFT ){
+////			set_pid_target(&l_pid, 0);
+////			set_pid_target(&r_pid, -veerpid.PID_out);
+////			PID_Calc_One_Motor(1,Yawpid_out);
+////			PID_Calc_One_Motor(0, 0);
+//			Set_PID_Motor(0 ,Yawpid_out);
+//			
+//		}else {
+////			set_pid_target(&l_pid, veerpid.PID_out);
+////			set_pid_target(&r_pid, -veerpid.PID_out);
+////			PID_Calc_One_Motor(0, Yawpid_out);
+////			PID_Calc_One_Motor(1, -Yawpid_out);
+//			Set_PID_Motor(Yawpid_out ,-Yawpid_out);
+//		}
+//		
+////		
+//	printf("dir:%3.2f\r\n",dir);
+////		if(My_abs(err) < 10 ){
+////			break;
+////		}
+////	}
+
+//	Set_PID_Motor(0 ,0);
+//	delay_ms(100);
+//}
 
 
