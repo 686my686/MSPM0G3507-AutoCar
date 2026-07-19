@@ -155,12 +155,14 @@ void Motion_Get_Speed(car_data_t *car)
     car->Vy = -(speed_mm[0] - speed_mm[1] ) / 2;
     car->Vz = -(speed_mm[0] - speed_mm[1]) / 2.0f / robot_APB * 1000;
 
+    /* 始终更新编码器速度，供闭环控速使用 */
+    for (i = 0; i < MAX_MOTOR; i++)
+    {
+        motor_data.speed_mm_s[i] = speed_mm[i];
+    }
+
     if (g_start_ctrl)
     {
-        for (i = 0; i < MAX_MOTOR; i++)
-        {
-            motor_data.speed_mm_s[i] = speed_mm[i];
-        }
         PID_Calc_Motor(&motor_data);
     }
 }
