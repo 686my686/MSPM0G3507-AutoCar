@@ -105,8 +105,8 @@ void mode_1(void)
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 //		set_pid_target(&yawpid, first_yaw);
 
 		mode1_stop= LineCheck();
@@ -304,8 +304,8 @@ else if(mode3_flag==1&&mode3_stop==0&&Line_flag==0&&yaw_flag==0)
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode3_stop= LineCheck();	
 	}
 	
@@ -512,8 +512,8 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==0
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -681,8 +681,8 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==1
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -843,8 +843,8 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==2
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -1004,8 +1004,8 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==3
 		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
 
 			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
-			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
-			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
+			OLED_ShowNum(22, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(78, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
