@@ -237,7 +237,7 @@ if(mode3_flag==0&&mode3_stop==0&&Line_flag==0&&yaw_flag==0)
 	{
 		delay_ms(2000);
 		first_yaw =calibratedYaw; //��ȡ��ʱimu����������б�� Obtain the IMU data at this moment in order to calculate the slanting angle.
-	  object_yaw  = navigetion_0_360_limit(first_yaw-35);	//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
+	  object_yaw  = navigetion_0_360_limit(first_yaw-38.7);	//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
 
 
 
@@ -308,7 +308,7 @@ else if(mode3_flag==1&&mode3_stop==1&&Line_flag==1&&yaw_flag==0)
 		odometry_sum=0;
 	mode3_stop= 0;
 		
-	object_yaw  = navigetion_0_360_limit(Second_yaw+37.4);//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
+	object_yaw  = navigetion_0_360_limit(Second_yaw+38.7);//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
 
 
 
@@ -441,7 +441,7 @@ if(mode4_flag==0&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==0)
 	{
 		delay_ms(2000);
 			first_yaw =calibratedYaw; //��ȡ��ʱimu����������б�� Obtain the IMU data at this moment in order to calculate the slanting angle.
-	  object_yaw  = navigetion_0_360_limit(first_yaw-35);	//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
+	  object_yaw  = navigetion_0_360_limit(first_yaw-38.7);	//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
 
 
 
@@ -512,7 +512,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==0&&mode4_Circle==0
 		odometry_sum=0;
 	mode4_stop= 0;
 		
-	object_yaw  = navigetion_0_360_limit(Second_yaw+37.4);//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
+	object_yaw  = navigetion_0_360_limit(Second_yaw+38.7);//������б�߽Ƕȣ����б����ƫ���޸�����ط��Ĳ��� Calculate the angle of the diagonal line; if there is any deviation in the diagonal line, adjust the parameters in this area accordingly.
 
 
 
@@ -600,7 +600,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==3&&mode4_Circle==0
 		mode4_stop=0;
 		Line_flag=0;
 		yaw_flag=0;
-		object_yaw  = navigetion_0_360_limit(first_yaw2-31.50);
+		object_yaw  = navigetion_0_360_limit(first_yaw2-38.7);
 		
 
 	
@@ -673,7 +673,7 @@ if((odometry_sum>40)&&line_stop==0&&abs(first_yaw_flag3-calibratedYaw)>160&&abs(
 		odometry_sum=0;
 	mode4_stop= 0;
 		
-		object_yaw  = navigetion_0_360_limit(Second_yaw2+38.3);
+		object_yaw  = navigetion_0_360_limit(Second_yaw2+38.7);
 		
 
 
@@ -758,7 +758,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==3&&mode4_Circle==1
 		mode4_stop=0;
 		Line_flag=0;
 		yaw_flag=0;
-		object_yaw  = navigetion_0_360_limit(first_yaw3-29);
+		object_yaw  = navigetion_0_360_limit(first_yaw3-38.7);
 
 //	
 	
@@ -832,7 +832,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==0&&mode4_Circle==2
 		odometry_sum=0;
 	mode4_stop= 0;
 		
-		object_yaw  = navigetion_0_360_limit(Second_yaw3+37);
+		object_yaw  = navigetion_0_360_limit(Second_yaw3+38.7);
 
 //	
 	
@@ -916,7 +916,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==3&&mode4_Circle==2
 		mode4_stop=0;
 		Line_flag=0;
 		yaw_flag=0;
-		 object_yaw  = navigetion_0_360_limit(first_yaw4-30.3);
+		 object_yaw  = navigetion_0_360_limit(first_yaw4-38.7);
 		
 
 
@@ -988,7 +988,7 @@ else if(mode4_flag==1&&mode4_stop==1&&Line_flag==1&&yaw_flag==0&&mode4_Circle==3
 		delay_ms(1000);
 		Second_yaw4=calibratedYaw;
 	mode4_stop= 0;
-	object_yaw  = navigetion_0_360_limit(Second_yaw4+37.3);	
+	object_yaw  = navigetion_0_360_limit(Second_yaw4+38.7);	
 
 	}else
 	{
