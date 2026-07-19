@@ -5,7 +5,7 @@
 #include "AllHeader.h"
 
 
-#define MOTOR_DEAD_ZONE  (75) 
+#define MOTOR_DEAD_ZONE  (40)
 #define MAX_SPEED (850)
 
 typedef enum

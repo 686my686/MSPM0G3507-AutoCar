@@ -59,11 +59,11 @@ void Get_CalibratedAngles(void)
 	
 	
 	
-    if(Filter_out < -2)
+    if(Filter_out < -0.3)
     {
         calibratedYaw = -Filter_out;
     }
-    else if(Filter_out >= 2)
+    else if(Filter_out >= 0.3)
     {
         calibratedYaw = 360 - Filter_out; //车头朝前yaw顺时针为负数  逆时针为正数 yaw clockwise is negative
     }
@@ -144,7 +144,7 @@ void Get_EulerAngles(void)
 }
 
 //角度环PID控制 Angle ring PID control
-float dir_kp = 2.0,dir_ki=0.000,dir_kd = 5.00;
+float dir_kp = 3.2,dir_ki=0.080,dir_kd = 4.00;
 int Integral_Max = 300; //300
 int pid_max = 1000; //3000
 float Dir_PID(float error)
@@ -167,8 +167,8 @@ float Dir_PID(float error)
 	 err_last = error;       // 更新积分项，并进行限幅 Update the integral term and limit it
 
     // 对输出进行限幅Output limiting value
-    if (result > Integral_Max) result = pid_max;  
-    if (result < -Integral_Max) result = -pid_max;
+    if (result > pid_max) result = pid_max;
+    if (result < -pid_max) result = -pid_max;
 	printf("result:%3.2f\r\n",result);
     return -result;
 }
