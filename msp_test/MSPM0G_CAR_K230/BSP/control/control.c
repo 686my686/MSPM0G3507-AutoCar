@@ -129,101 +129,137 @@ void mode_1(void)
 //H��mode2
 void mode_2(void)
 {
+    static float first_yaw;
+    static float yaw_at_C;
+    static float yaw_at_D;
 
-	
-		static float first_yaw;
+    // �׶�0: ��ʼ��
+    if(mode2_flag==0&&mode2_stop==0&&Line_flag==0&&yaw_flag==0)
+    {
+        delay_ms(2000);
+        first_yaw = calibratedYaw;
+        object_yaw = navigetion_0_360_limit(first_yaw);
+        mode2_flag=1;
+    }
 
-if(mode2_flag==0&&mode2_stop==0&&Line_flag==0&&yaw_flag==0)
-	{
-		delay_ms(2000);
-		first_yaw =calibratedYaw;
-	  object_yaw  = navigetion_0_360_limit(first_yaw);	
+    // �׶�1: A��Bֱ�� (Yaw��������)
+    else if(mode2_flag==1&&mode2_stop==0&&Line_flag==0&&yaw_flag==0)
+    {
+        balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
+        yaw_out = Dir_PID(balance_yaw);
+        Set_PID_Motor(120, 120, yaw_out);
+        mode2_stop = LineCheck();
+    }
 
+    // �׶�2: ����B�� �� ͣ������Ѳ��׼��
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==0&&yaw_flag==0)
+    {
+        yaw_out = 0;
+        object_yaw = 0;
+        Motor_Stop(1);
+        Buzzer_open_state();
+        Control_RGB_ALL(Cyan_RGB);
+        delay_ms(10);
+        Buzzer_close_state();
+        Control_RGB_ALL(OFF);
+        delay_ms(1000);
+        first_yaw_flag2 = calibratedYaw;  // ��¼����B��ʱ��IMU����
+        encoder_odometry_flag = 1;
+        Line_flag = 1;
+    }
 
+    // �׶�3: ����B��C (IRѲ��, ת180��)
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==0)
+    {
+        Line_Tracke(1);
+        line_stop = LineCheck();
+        if(odometry_sum > 40 && line_stop==0 &&
+           abs(first_yaw_flag2-calibratedYaw) > 160 &&
+           abs(first_yaw_flag2-calibratedYaw) < 180)
+        {
+            // ������ɣ�����C��
+            Motor_Stop(1);
+            Buzzer_open_state();
+            Control_RGB_ALL(Cyan_RGB);
+            delay_ms(10);
+            Buzzer_close_state();
+            Control_RGB_ALL(OFF);
+            delay_ms(1000);
 
+            yaw_at_C = calibratedYaw;
+            odometry_sum = 0;
+            object_yaw = navigetion_0_360_limit(yaw_at_C);
+            yaw_flag = 1;
+        }
+        else
+        {
+            Line_Tracke(1);
+        }
+    }
 
-		mode2_flag=1;
-	}
-	
-else if(mode2_flag==1&&mode2_stop==0&&Line_flag==0&&yaw_flag==0)
-	{
+    // �׶�4: C��Dֱ�� (Yaw��������)
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==1)
+    {
+        Line_Tracke(0);  // ֻ�����ﴫ��������������
+        balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
+        yaw_out = Dir_PID(balance_yaw);
+        Set_PID_Motor(120, 120, yaw_out);
+        encoder_odometry_flag = 1;
+        line_stop = LineCheck();
+        if(odometry_sum > 60 && line_stop == 1)  // ����D��
+        {
+            Motor_Stop(1);
+            Buzzer_open_state();
+            Control_RGB_ALL(Cyan_RGB);
+            delay_ms(10);
+            Buzzer_close_state();
+            Control_RGB_ALL(OFF);
+            delay_ms(1000);
 
+            yaw_at_D = calibratedYaw;
+            yaw_flag = 2;
+        }
+    }
 
+    // �׶�5: ��λ��̱̣�׼���ڶ�������
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==2)
+    {
+        encoder_odometry_flag = 0;
+        odometry_sum = 0;
+        yaw_flag = 3;
+    }
 
-	
+    // �׶�6: ����D��A (IRѲ��, ת180��)
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==3)
+    {
+        Line_Tracke(1);
+        line_stop = LineCheck();
+        encoder_odometry_flag = 1;
+        if(odometry_sum > 40 && line_stop==0 &&
+           abs(yaw_at_D-calibratedYaw) > 160 &&
+           abs(yaw_at_D-calibratedYaw) < 180)
+        {
+            // �����ڶ����������ص�A
+            Motor_Stop(1);
+            Buzzer_open_state();
+            Control_RGB_ALL(Cyan_RGB);
+            delay_ms(10);
+            Buzzer_close_state();
+            Control_RGB_ALL(OFF);
+            yaw_flag = 5;  // ��������ͣ��
+        }
+        else
+        {
+            Line_Tracke(1);
+        }
+    }
 
-		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
-		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
-		mode2_stop= LineCheck();	
-	}
-	
-else if(mode2_flag==1&&mode2_stop==1&&Line_flag==0&&yaw_flag==0)
-{
-
-	yaw_out=0;
-	object_yaw=0;
-
-	 Motor_Stop(1) ;
-
-	
-	Buzzer_open_state();
-	Control_RGB_ALL(Cyan_RGB);
-
-	delay_ms(10);
-	Buzzer_close_state();
-	 Control_RGB_ALL(OFF);
-		delay_ms(1000);
-	first_yaw_flag2=calibratedYaw;
-	Line_flag =1;
-
+    // �׶�7: ����ͣ��
+    else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==5)
+    {
+        Motor_Stop(1);
+    }
 }
-
-	
-
-else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==0)
-{
-
-
-	Line_Tracke(1);
-	line_stop=LineCheck();	
-	if(abs(first_yaw_flag2-calibratedYaw)>170&&abs(first_yaw_flag2-calibratedYaw)<190&&line_stop==0)
-	{
-//		yaw_flag=1;
-		Motor_Stop(1) ;
-		
-		Buzzer_open_state();
-		Control_RGB_ALL(Cyan_RGB);
-
-		delay_ms(10);
-		Buzzer_close_state();
-		Control_RGB_ALL(OFF);
-		yaw_flag=5;
-		
-
-	
-
-	}else
-	{
-
-		Line_Tracke(1);
-		
-	}
-
-}
-else if(mode2_flag==1&&mode2_stop==1&&Line_flag==1&&yaw_flag==5)
-{
-
-	Motor_Stop(1) ;
-
-
-
-}
-
-
-
-}
-
 void mode_3(void)
 {
 
