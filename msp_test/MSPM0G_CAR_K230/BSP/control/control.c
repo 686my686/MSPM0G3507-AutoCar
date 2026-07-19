@@ -1,5 +1,13 @@
 #include "control.h"
 
+extern int g_Encoder_All_Offset[4];  /* 编码器脉冲，[0]=左轮 [1]=右轮 */
+
+/* 电机转速补偿系数：实测后填入
+ * 例如左轮偏慢（车左偏）→ LEFT_COMP > 1.0
+ * 用法：跑mode_1看OLED上的L/R脉冲数，比值即补偿系数 */
+#define LEFT_COMP  1.00f
+#define RIGHT_COMP 1.00f
+
 int encoder_odometry_flag = 0;
 extern volatile float gyro_x,gyro_y,gyro_z,accel_z;
 extern volatile float Accel_Angle_X,Accel_Angle_Y;
@@ -94,7 +102,11 @@ void mode_1(void)
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 //		set_pid_target(&yawpid, first_yaw);
 
 		mode1_stop= LineCheck();
@@ -289,7 +301,11 @@ else if(mode3_flag==1&&mode3_stop==0&&Line_flag==0&&yaw_flag==0)
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode3_stop= LineCheck();	
 	}
 	
@@ -493,7 +509,11 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==0
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -658,7 +678,11 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==1
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -816,7 +840,11 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==2
 
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
@@ -973,7 +1001,11 @@ else if(mode4_flag==1&&mode4_stop==0&&Line_flag==0&&yaw_flag==0&&mode4_Circle==3
 	
 		balance_yaw	=get_minor_arc(object_yaw,calibratedYaw);
 		yaw_out=Dir_PID(balance_yaw);
-		Set_PID_Motor(120 ,120,yaw_out);
+		Set_PID_Motor(120 * LEFT_COMP, 120 * RIGHT_COMP, yaw_out);
+
+			/* OLED显示编码器脉冲 L/R，用于测量两轮速差 */
+			OLED_ShowNum(0, 30, g_Encoder_All_Offset[0], 4, 8, 1);
+			OLED_ShowNum(60, 30, g_Encoder_All_Offset[1], 4, 8, 1);
 		mode4_stop= LineCheck();	
 	}
 	
