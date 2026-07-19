@@ -9,7 +9,7 @@
 
 
 
-extern volatile float pitch,roll,yaw;   //??¡è???? Euler Angles
+extern volatile float pitch,roll,yaw;   //??ï¿½ï¿½???? Euler Angles
 
 extern volatile float yawBias,pitchBias,rollBias;
 extern volatile float calibratedYaw, calibratedPitch, calibratedRoll;
@@ -28,6 +28,7 @@ typedef struct
 float get_Filter(float Encoder_Err)	;
 void Get_EulerAngles(void);
 float Dir_PID(float error);
+float Yaw_To_Speed(float angle_error);
 float navigetion_0_360_limit(float angle);
 float get_minor_arc(float azimuth,float headingAngle);
 void AngleOffsetCalc(void) ;

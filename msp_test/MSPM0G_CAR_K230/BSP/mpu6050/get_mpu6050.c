@@ -144,7 +144,7 @@ void Get_EulerAngles(void)
 }
 
 //角度环PID控制 Angle ring PID control
-float dir_kp = 3.2,dir_ki=0.080,dir_kd = 4.00;
+float dir_kp = 7.0,dir_ki=0.080,dir_kd = 8.00;
 int Integral_Max = 300; //300
 int pid_max = 1000; //3000
 float Dir_PID(float error)
@@ -169,8 +169,29 @@ float Dir_PID(float error)
     // 对输出进行限幅Output limiting value
     if (result > pid_max) result = pid_max;
     if (result < -pid_max) result = -pid_max;
-	printf("result:%3.2f\r\n",result);
+    printf("result:%3.2f\r\n",result);
     return -result;
+}
+
+/* 角度→速度校正PID（双环架构外环）
+ * 输入：角度误差(°)  输出：速度校正值(mm/s)，范围±150
+ * 与Dir_PID的区别：输出是速度目标而非直接PWM
+ * 参考01_pid_mpu6050_car_example的YAW_KP=3.0/YAW_KI=0.005架构 */
+float Yaw_To_Speed(float angle_error)
+{
+    static float integral = 0;
+    #define YS_KP 3.0f
+    #define YS_KI 0.005f
+
+    integral += angle_error;
+    if (integral > 80)  integral = 80;
+    if (integral < -80) integral = -80;
+
+    float correction = YS_KP * angle_error + YS_KI * integral;
+    if (correction > 150)  correction = 150;
+    if (correction < -150) correction = -150;
+
+    return correction;
 }
 //将航向角限制为 0-360 度（防止因加减运算导致航向角范围超过 0-360 度）
 //Limit the heading_angle to 0-360 degrees(to prevent the range of heading_angle over 0-360 degrees beacuse of Addition or subtraction operations )

@@ -18,6 +18,11 @@
 #define PID_DEF_KI (-0.030f) //0.06
 #define PID_DEF_KD (-000.8f) //0.5
 
+/* 速度闭环PID参数（正值，err=target-actual，编码器反馈mm/s） */
+#define SPD_KP_POS (5.0f)
+#define SPD_KI_POS (0.1f)
+#define SPD_KD_POS (0.05f)
+
 
 
 //#define PID_DEF_KP (1.2f) //0.8
