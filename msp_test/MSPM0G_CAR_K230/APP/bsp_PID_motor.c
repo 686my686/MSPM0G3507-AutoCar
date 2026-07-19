@@ -1,5 +1,7 @@
 #include "bsp_PID_motor.h"
 
+extern motor_data_t motor_data;
+
 
 
 PID_TypeDef  veer_pid;

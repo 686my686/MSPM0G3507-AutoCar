@@ -63,8 +63,6 @@ void wheel_State(uint8_t state, uint16_t speed);
 void wheel_Ctrl(int16_t V_x, int16_t V_y, int16_t V_z);
 void Motion_Handle(void);
 
-extern motor_data_t motor_data;
-
 
 
 

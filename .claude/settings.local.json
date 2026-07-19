@@ -43,7 +43,9 @@
       "Bash(grep -A2 \"BSP\\\\\\\\\\\\\\\\\" keil/MSPM0G_CAR_K230.uvprojx)",
       "Bash(sed 's/.*<FilePath>//;s/<.*//')",
       "Bash(grep -A2 \"APP\\\\\\\\\\\\\\\\\" keil/MSPM0G_CAR_K230.uvprojx)",
-      "mcp__ide__executeCode"
+      "mcp__ide__executeCode",
+      "Bash(git checkout *)",
+      "Bash(git restore *)"
     ]
   }
 }
