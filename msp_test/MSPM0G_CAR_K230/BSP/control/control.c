@@ -88,44 +88,33 @@ void mode_1(void)
 		delay_ms(2000);
 		first_yaw = calibratedYaw;
 		object_yaw  = navigetion_0_360_limit(first_yaw);
+
+		/* 仿项目一：独立速度PID参数 Kp=0.5 Ki=0.02 Kd=0 */
+		PID_Set_Motor_Parm(2, 0.5f, 0.02f, 0.0f);
+		PID_Clear_Motor(MAX_MOTOR);
+
 		mode1_flag = 1;
 	}
 	if(mode1_flag == 1 && mode1_stop == 0)
 	{
-		/* === 角度误差 === */
 		balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
 
-		/* === 纯P + 强低通滤波（无记忆，误差消失后自动归零） === */
-		float raw_p = balance_yaw * 5.0f;           /* P项，只看当前误差 */
-		if (raw_p > 300)  raw_p = 300;
-		if (raw_p < -300) raw_p = -300;
-		static float yaw_smooth = 0;
-		yaw_smooth = yaw_smooth * 0.85f + raw_p * 0.15f;  /* 滤波平滑，自动衰减 */
+		/* === 偏航增量式PID（仿项目一 YAW_KP=3.0 YAW_KI=0.005 YAW_KD=0） === */
+		static float yaw_out = 0;
+		static float yaw_err_prev = 0;
+		yaw_out += 3.0f * (balance_yaw - yaw_err_prev) + 0.005f * balance_yaw;
+		if (yaw_out > 300)  yaw_out = 300;
+		if (yaw_out < -300) yaw_out = -300;
+		yaw_err_prev = balance_yaw;
 
-		/* === 编码器速差直接补偿（不等角度偏了再反应） === */
-		float speed_l = motor_data.speed_mm_s[0];
-		float speed_r = motor_data.speed_mm_s[1];
-		float speed_diff = speed_l - speed_r;     /* 正值=左快右慢 */
-		float trim = speed_diff * 2.0f;           /* 补偿量：速差×系数 */
-
-		/* === 合成PWM输出 === */
-		int base_pwm = 350;
-		int left_pwm  = base_pwm + (int)yaw_smooth - (int)trim;
-		int right_pwm = base_pwm - (int)yaw_smooth + (int)trim;
-
-		/* 限幅 */
-		if (left_pwm  > 850) left_pwm  = 850;
-		if (left_pwm  < 40)  left_pwm  = 40;
-		if (right_pwm > 850) right_pwm = 850;
-		if (right_pwm < 40)  right_pwm = 40;
-
-		PWM_Control_Car(left_pwm, right_pwm);
+		/* 速度目标 = 基准300 ± yaw校正（仿项目一: 200 ± yaw_err） */
+		Motion_Set_Speed(300 - (int)yaw_out, 300 + (int)yaw_out);
 
 		mode1_stop = LineCheck();
 	}
 	else if(mode1_flag == 1 && mode1_stop == 1)
 	{
-		Motor_Stop(STOP_BRAKE);
+		Motion_Stop(STOP_BRAKE);
 		Buzzer_open_state();
 		delay_ms(10);
 		Buzzer_close_state();
@@ -137,8 +126,6 @@ void mode_1(void)
 		Motor_Stop(1);
 	}
 }
-
-
 //H��mode2
 void mode_2(void)
 {
