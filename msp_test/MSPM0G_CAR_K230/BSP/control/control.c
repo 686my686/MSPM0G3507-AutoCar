@@ -137,19 +137,6 @@ void mode_1(void)
 		Motor_Stop(1);
 	}
 }
-	{
-		Motor_Stop(STOP_BRAKE);
-		Buzzer_open_state();
-		delay_ms(10);
-		Buzzer_close_state();
-		Control_RGB_ALL(OFF);
-		mode1_stop = 5;
-	}
-	else if(mode1_flag == 1 && mode1_stop == 5)
-	{
-		Motor_Stop(1);
-	}
-}
 
 
 //H��mode2
