@@ -1,6 +1,7 @@
 #include "control.h"
 
 extern int g_Encoder_All_Offset[4];  /* 编码器脉冲，[0]=左轮 [1]=右轮 */
+extern motor_data_t motor_data;      /* 编码器速度 mm/s，用于速差补偿 */
 
 /* 电机转速补偿系数：实测后填入
  * 例如左轮偏慢（车左偏）→ LEFT_COMP > 1.0
@@ -81,53 +82,54 @@ int abs(int p)
 
 void mode_1(void)
 {
-	
-	
-//	PID_TypeDef yawpid;
-//	PID_param_init(&yawpid);
-//	set_pid_target(&yawpid, 0);
-//	set_p_i_d(&yawpid, yaw_p, 0, yaw_d);
-		static float first_yaw;
-	if(mode1_flag ==0&&mode1_stop==0)
+	static float first_yaw;
+	if(mode1_flag == 0 && mode1_stop == 0)
 	{
 		delay_ms(2000);
-		first_yaw =calibratedYaw;
+		first_yaw = calibratedYaw;
 		object_yaw  = navigetion_0_360_limit(first_yaw);
-		PID_Set_Motor_Parm(2, SPD_KP_POS, SPD_KI_POS, SPD_KD_POS);  /* 速度环PID参数，只初始化一次 */
-		mode1_flag=1;
+		mode1_flag = 1;
 	}
-		if(mode1_flag==1&&mode1_stop==0)
-		{
+	if(mode1_flag == 1 && mode1_stop == 0)
+	{
+		/* === 角度误差 → yaw校正（兜底） === */
+		balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
+		float yaw_correction = Dir_PID(balance_yaw);
 
-			/* 双环架构：角度环→速度目标 + 速度环→PWM（编码器反馈） */
-			balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
-			float yaw_speed = Yaw_To_Speed(balance_yaw);  /* 角度误差→速度校正 */
-			Motion_Set_Speed(300 - (int)yaw_speed, 300 + (int)yaw_speed);
+		/* === 编码器速差直接补偿（不等角度偏了再反应） === */
+		float speed_l = motor_data.speed_mm_s[0];
+		float speed_r = motor_data.speed_mm_s[1];
+		float speed_diff = speed_l - speed_r;     /* 正值=左快右慢 */
+		float trim = speed_diff * 1.0f;           /* 补偿量：速差×系数 */
 
-			mode1_stop = LineCheck();
-		}
-		else if(mode1_flag==1&&mode1_stop==1)
-		{
+		/* === 合成PWM输出 === */
+		int base_pwm = 350;
+		int left_pwm  = base_pwm + (int)yaw_correction - (int)trim;
+		int right_pwm = base_pwm - (int)yaw_correction + (int)trim;
 
-			Motion_Stop(STOP_BRAKE);
-			Buzzer_open_state();
+		/* 限幅 */
+		if (left_pwm  > 850) left_pwm  = 850;
+		if (left_pwm  < 40)  left_pwm  = 40;
+		if (right_pwm > 850) right_pwm = 850;
+		if (right_pwm < 40)  right_pwm = 40;
 
-	delay_ms(10);
-	Buzzer_close_state();
-	 Control_RGB_ALL(OFF);
-		mode1_stop=5;
-		
-	
+		PWM_Control_Car(left_pwm, right_pwm);
+
+		mode1_stop = LineCheck();
 	}
-	
-		else if(mode1_flag==1&&mode1_stop==5)
-		{
-		
-				Motor_Stop(1) ;
-		
-		
-		
-		}
+	else if(mode1_flag == 1 && mode1_stop == 1)
+	{
+		Motor_Stop(STOP_BRAKE);
+		Buzzer_open_state();
+		delay_ms(10);
+		Buzzer_close_state();
+		Control_RGB_ALL(OFF);
+		mode1_stop = 5;
+	}
+	else if(mode1_flag == 1 && mode1_stop == 5)
+	{
+		Motor_Stop(1);
+	}
 }
 
 

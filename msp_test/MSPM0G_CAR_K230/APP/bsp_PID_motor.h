@@ -19,9 +19,9 @@
 #define PID_DEF_KD (-000.8f) //0.5
 
 /* 速度闭环PID参数（正值，err=target-actual，编码器反馈mm/s） */
-#define SPD_KP_POS (0.5f)   /* 适度Kp，增量式Kp×Δerr，0.03太小基本没反应 */
+#define SPD_KP_POS (0.7f)   /* 适度Kp，增量式Kp×Δerr，0.03太小基本没反应 */
 #define SPD_KI_POS (0.04f)  /* 小积分维持驱动力，0.12导致累积过冲→前后摩擦 */
-#define SPD_KD_POS (0.15f)  /* 适度阻尼，太大压垮PWM，太小不抗振荡 */
+#define SPD_KD_POS (0.20f)  /* 适度阻尼，太大压垮PWM，太小不抗振荡 */
 
 
 
