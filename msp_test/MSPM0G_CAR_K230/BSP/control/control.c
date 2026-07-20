@@ -100,7 +100,7 @@ void mode_1(void)
 		float speed_l = motor_data.speed_mm_s[0];
 		float speed_r = motor_data.speed_mm_s[1];
 		float speed_diff = speed_l - speed_r;     /* 正值=左快右慢 */
-		float trim = speed_diff * 1.0f;           /* 补偿量：速差×系数 */
+		float trim = speed_diff * 2.0f;           /* 补偿量：速差×系数 */
 
 		/* === 合成PWM输出 === */
 		int base_pwm = 350;
