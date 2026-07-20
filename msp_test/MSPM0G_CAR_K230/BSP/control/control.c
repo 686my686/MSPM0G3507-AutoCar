@@ -10,7 +10,7 @@ extern int g_Encoder_All_Offset[4];  /* 编码器脉冲，仅odometry用 */
 #define RIGHT_COMP 1.00f
 
 /* 右轮机械偏慢的固定PWM补偿（实测调整：车左偏→加大，车右偏→减小） */
-#define RIGHT_BIAS  20
+#define RIGHT_BIAS  0   /* 先归零排查 */
 
 int encoder_odometry_flag = 0;
 extern volatile float gyro_x,gyro_y,gyro_z,accel_z;
