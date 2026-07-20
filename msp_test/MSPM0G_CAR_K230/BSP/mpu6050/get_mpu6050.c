@@ -172,6 +172,26 @@ float Dir_PID(float error)
 	printf("result:%3.2f\r\n",result);
     return -result;
 }
+
+/* 角度→速度校正PID（双环架构外环）
+ * 输入：角度误差(°)  输出：速度校正值(mm/s)，范围±150
+ * 与Dir_PID的区别：输出是速度目标而非直接PWM */
+float Yaw_To_Speed(float angle_error)
+{
+    static float integral = 0;
+    #define YS_KP 3.0f
+    #define YS_KI 0.005f
+
+    integral += angle_error;
+    if (integral > 80)  integral = 80;
+    if (integral < -80) integral = -80;
+
+    float correction = YS_KP * angle_error + YS_KI * integral;
+    if (correction > 150)  correction = 150;
+    if (correction < -150) correction = -150;
+
+    return correction;
+}
 //将航向角限制为 0-360 度（防止因加减运算导致航向角范围超过 0-360 度）
 //Limit the heading_angle to 0-360 degrees(to prevent the range of heading_angle over 0-360 degrees beacuse of Addition or subtraction operations )
 float navigetion_0_360_limit(float angle)
