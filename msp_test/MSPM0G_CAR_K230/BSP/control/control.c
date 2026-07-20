@@ -1,7 +1,7 @@
 #include "control.h"
 
-extern int g_Encoder_All_Offset[4];  /* 编码器脉冲，[0]=左轮 [1]=右轮 */
-extern motor_data_t motor_data;      /* 编码器速度 mm/s，用于速差补偿 */
+extern motor_data_t motor_data;      /* 编码器速度，调试用（不参与控制） */
+extern int g_Encoder_All_Offset[4];  /* 编码器脉冲，仅odometry用 */
 
 /* 电机转速补偿系数：实测后填入
  * 例如左轮偏慢（车左偏）→ LEFT_COMP > 1.0
@@ -17,7 +17,7 @@ extern volatile float gyro_x,gyro_y,gyro_z,accel_z;
 extern volatile float Accel_Angle_X,Accel_Angle_Y;
 //uint8_t mode = NO_SELECT_MODE;
 extern volatile float kal_mpu_out;
-volatile int balance_yaw;
+volatile float balance_yaw;
 volatile int RGB_BEEP_flag=0;
 volatile int odometry_sum = 0;                      //Odometer value(��̼���ֵ)
 
@@ -134,20 +134,6 @@ void mode_1(void)
 		Motor_Stop(1);
 	}
 }
-	{
-		Motor_Stop(STOP_BRAKE);
-		Buzzer_open_state();
-		delay_ms(10);
-		Buzzer_close_state();
-		Control_RGB_ALL(OFF);
-		mode1_stop = 5;
-	}
-	else if(mode1_flag == 1 && mode1_stop == 5)
-	{
-		Motor_Stop(1);
-	}
-}
-
 
 //H��mode2
 void mode_2(void)
