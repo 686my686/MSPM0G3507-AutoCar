@@ -92,9 +92,22 @@ void mode_1(void)
 	}
 	if(mode1_flag == 1 && mode1_stop == 0)
 	{
-		/* === 角度误差 → yaw校正（兜底） === */
+		/* === 角度误差 === */
 		balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
-		float yaw_correction = Dir_PID(balance_yaw);
+
+		/* === 增量式偏航PID（平滑累积，天然防抖） === */
+		static float yaw_out = 0;
+		static float yaw_err_prev = 0;
+		#define YAW_KP 1.5f
+		#define YAW_KI 0.005f
+		yaw_out += YAW_KP * (balance_yaw - yaw_err_prev) + YAW_KI * balance_yaw;
+		if (yaw_out > 300)  yaw_out = 300;
+		if (yaw_out < -300) yaw_out = -300;
+		yaw_err_prev = balance_yaw;
+
+		/* === 低通滤波平滑输出 === */
+		static float yaw_smooth = 0;
+		yaw_smooth = yaw_smooth * 0.8f + yaw_out * 0.2f;
 
 		/* === 编码器速差直接补偿（不等角度偏了再反应） === */
 		float speed_l = motor_data.speed_mm_s[0];
@@ -104,8 +117,8 @@ void mode_1(void)
 
 		/* === 合成PWM输出 === */
 		int base_pwm = 350;
-		int left_pwm  = base_pwm + (int)yaw_correction - (int)trim;
-		int right_pwm = base_pwm - (int)yaw_correction + (int)trim;
+		int left_pwm  = base_pwm + (int)yaw_smooth - (int)trim;
+		int right_pwm = base_pwm - (int)yaw_smooth + (int)trim;
 
 		/* 限幅 */
 		if (left_pwm  > 850) left_pwm  = 850;

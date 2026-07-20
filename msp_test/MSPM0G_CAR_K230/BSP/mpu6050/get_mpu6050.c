@@ -144,7 +144,7 @@ void Get_EulerAngles(void)
 }
 
 //角度环PID控制 Angle ring PID control
-float dir_kp = 5.00,dir_ki=0.00,dir_kd = 5.00;
+float dir_kp = 7.50,dir_ki=0.00,dir_kd = 5.00;
 int Integral_Max = 300; //300
 int pid_max = 1000; //3000
 float Dir_PID(float error)
