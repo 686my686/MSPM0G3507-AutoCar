@@ -95,19 +95,12 @@ void mode_1(void)
 		/* === 角度误差 === */
 		balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
 
-		/* === 增量式偏航PID（平滑累积，天然防抖） === */
-		static float yaw_out = 0;
-		static float yaw_err_prev = 0;
-		#define YAW_KP 1.5f
-		#define YAW_KI 0.005f
-		yaw_out += YAW_KP * (balance_yaw - yaw_err_prev) + YAW_KI * balance_yaw;
-		if (yaw_out > 300)  yaw_out = 300;
-		if (yaw_out < -300) yaw_out = -300;
-		yaw_err_prev = balance_yaw;
-
-		/* === 低通滤波平滑输出 === */
+		/* === 纯P + 强低通滤波（无记忆，误差消失后自动归零） === */
+		float raw_p = balance_yaw * 5.0f;           /* P项，只看当前误差 */
+		if (raw_p > 300)  raw_p = 300;
+		if (raw_p < -300) raw_p = -300;
 		static float yaw_smooth = 0;
-		yaw_smooth = yaw_smooth * 0.8f + yaw_out * 0.2f;
+		yaw_smooth = yaw_smooth * 0.85f + raw_p * 0.15f;  /* 滤波平滑，自动衰减 */
 
 		/* === 编码器速差直接补偿（不等角度偏了再反应） === */
 		float speed_l = motor_data.speed_mm_s[0];
@@ -131,6 +124,19 @@ void mode_1(void)
 		mode1_stop = LineCheck();
 	}
 	else if(mode1_flag == 1 && mode1_stop == 1)
+	{
+		Motor_Stop(STOP_BRAKE);
+		Buzzer_open_state();
+		delay_ms(10);
+		Buzzer_close_state();
+		Control_RGB_ALL(OFF);
+		mode1_stop = 5;
+	}
+	else if(mode1_flag == 1 && mode1_stop == 5)
+	{
+		Motor_Stop(1);
+	}
+}
 	{
 		Motor_Stop(STOP_BRAKE);
 		Buzzer_open_state();
