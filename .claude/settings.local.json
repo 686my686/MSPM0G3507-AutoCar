@@ -45,7 +45,14 @@
       "Bash(grep -A2 \"APP\\\\\\\\\\\\\\\\\" keil/MSPM0G_CAR_K230.uvprojx)",
       "mcp__ide__executeCode",
       "Bash(git checkout *)",
-      "Bash(git restore *)"
+      "Bash(git restore *)",
+      "Bash(python3)",
+      "Bash(python3 fix_control.py)",
+      "Bash(sed -i '105s/.*/\\\\t\\\\t\\\\/\\\\* === 合成PWM：固定基准 + yaw差速 + 右轮偏置 === \\\\*\\\\//' control.c)",
+      "Bash(sed -i '106,109d' control.c)",
+      "Bash(sed -i '106s/.*/\\\\t\\\\tint base_pwm = 350;/' control.c)",
+      "Bash(sed -i '107s/.*/\\\\t\\\\tint left_pwm  = base_pwm + \\(int\\)yaw_smooth;/' control.c)",
+      "Bash(sed -i '108s/.*/\\\\t\\\\tint right_pwm = base_pwm - \\(int\\)yaw_smooth + RIGHT_BIAS;/' control.c)"
     ]
   }
 }
