@@ -90,10 +90,11 @@ void mode_1(void)
 		static float first_yaw;
 	if(mode1_flag ==0&&mode1_stop==0)
 	{
-				delay_ms(2000);
-	first_yaw =calibratedYaw;
-	 object_yaw  = navigetion_0_360_limit(first_yaw);	
-	mode1_flag=1;
+		delay_ms(2000);
+		first_yaw =calibratedYaw;
+		object_yaw  = navigetion_0_360_limit(first_yaw);
+		PID_Set_Motor_Parm(2, SPD_KP_POS, SPD_KI_POS, SPD_KD_POS);  /* 速度环PID参数，只初始化一次 */
+		mode1_flag=1;
 	}
 		if(mode1_flag==1&&mode1_stop==0)
 		{
@@ -101,7 +102,6 @@ void mode_1(void)
 			/* 双环架构：角度环→速度目标 + 速度环→PWM（编码器反馈） */
 			balance_yaw = get_minor_arc(object_yaw, calibratedYaw);
 			float yaw_speed = Yaw_To_Speed(balance_yaw);  /* 角度误差→速度校正 */
-			PID_Set_Motor_Parm(2, SPD_KP_POS, SPD_KI_POS, SPD_KD_POS);  /* 正增益速度PID */
 			Motion_Set_Speed(300 - (int)yaw_speed, 300 + (int)yaw_speed);
 
 			mode1_stop = LineCheck();
