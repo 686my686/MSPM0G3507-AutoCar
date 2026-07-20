@@ -1,5 +1,7 @@
 #include "bsp_PID_motor.h"
 
+extern motor_data_t motor_data;
+
 
 
 PID_TypeDef  veer_pid;
@@ -421,15 +423,31 @@ void PID_Yaw_Set_Parm(float kp, float ki, float kd)
 
 void Set_PID_Motor(float set_l ,float set_r,float turn_out)
 {
-		
-		
-		l_pid_out =	PID_Calc_One_Motor(0, set_l);
-		r_pid_out =	PID_Calc_One_Motor(1, set_r);
-//		kal_lpid_out=KalmanFilter(&kfp_line,l_pid_out);
-//		kal_rpid_out=KalmanFilter(&kfp_line,r_pid_out);
-//		PWM_Control_Car(kal_lpid_out , kal_rpid_out );
-		PWM_Control_Car(l_pid_out+turn_out , r_pid_out-turn_out );
+    /* 第一步：用原有方式计算基础PWM */
+    pid_motor[0].target_val = 0;
+    pid_motor[1].target_val = 0;
+    l_pid_out = PID_Location_Calc(&pid_motor[0], set_l);
+    r_pid_out = PID_Location_Calc(&pid_motor[1], set_r);
 
+    /* 第二步：编码器闭环——两轮转速均衡 */
+    float speed_l = motor_data.speed_mm_s[0];
+    float speed_r = motor_data.speed_mm_s[1];
+
+    if (speed_l > 5.0f && speed_r > 5.0f)
+    {
+        static float speed_integral = 0;
+        float speed_error = speed_r - speed_l;
+
+        speed_integral += speed_error * 0.02f;
+        if (speed_integral > 80.0f)  speed_integral = 80.0f;
+        if (speed_integral < -80.0f) speed_integral = -80.0f;
+
+        float correction = speed_error * 5.0f + speed_integral;
+        l_pid_out += correction;
+        r_pid_out -= correction;
+    }
+
+    PWM_Control_Car(l_pid_out+turn_out , r_pid_out-turn_out);
 }
 
 

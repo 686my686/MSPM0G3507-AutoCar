@@ -5,16 +5,16 @@
 
 #include "AllHeader.h"
 
-// 450RPM电机，轮子转一整圈，编码器获得的脉冲数=减速比*码盘线数*编码器脉冲（45*13*4）
+// 450RPM锟斤拷锟斤拷锟斤拷锟斤拷锟阶伙拷锟饺︼拷锟斤拷锟斤拷锟斤拷锟斤拷锟矫碉拷锟斤拷锟斤拷锟斤拷=锟斤拷锟劫憋拷*锟斤拷锟斤拷锟斤拷锟斤拷*锟斤拷锟斤拷锟斤拷锟斤拷锟藉（45*13*4锟斤拷
 #define ENCODER_CIRCLE_450 (2340.0f)
 
-// Half of the sum of the distances between the car chassis motors 小车底盘电机间距之和的一半
+// Half of the sum of the distances between the car chassis motors 小锟斤拷锟斤拷锟教碉拷锟斤拷锟斤拷之锟酵碉拷一锟斤拷
 #define MSPM0Car_APB (157.09f) //(143.8+170.38)/2
 
-// The displacement of a wheel in one complete revolution, measured in meters 轮子转一整圈的位移，单位为米
+// The displacement of a wheel in one complete revolution, measured in meters 锟斤拷锟斤拷转一锟斤拷圈锟斤拷位锟狡ｏ拷锟斤拷位为锟斤拷
 #define MECANUM_CIRCLE_MM (210.486f)
 
-// 停止模式，STOP_FREE表示自由停止，STOP_BRAKE表示刹车。
+// 停止模式锟斤拷STOP_FREE锟斤拷示锟斤拷锟斤拷停止锟斤拷STOP_BRAKE锟斤拷示刹锟斤拷锟斤拷
 //Stop mode, STOP_ FREE stands for free stop, STOP_ BRAKE stands for braking.
 typedef enum _stop_mode
 {
