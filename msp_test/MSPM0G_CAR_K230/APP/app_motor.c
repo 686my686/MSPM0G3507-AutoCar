@@ -155,10 +155,11 @@ void Motion_Get_Speed(car_data_t *car)
     car->Vy = -(speed_mm[0] - speed_mm[1] ) / 2;
     car->Vz = -(speed_mm[0] - speed_mm[1]) / 2.0f / robot_APB * 1000;
 
-    /* 始终更新编码器速度，供速度闭环使用 */
+    /* 始终更新编码器速度（绝对值），供速度闭环使用
+     * 注意：右轮编码器极性反了（H2A/B相序与左轮相反），取绝对值修正 */
     for (i = 0; i < MAX_MOTOR; i++)
     {
-        motor_data.speed_mm_s[i] = speed_mm[i];
+        motor_data.speed_mm_s[i] = (speed_mm[i] >= 0) ? speed_mm[i] : -speed_mm[i];
     }
 
     if (g_start_ctrl)
