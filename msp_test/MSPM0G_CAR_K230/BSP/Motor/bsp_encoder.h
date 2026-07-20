@@ -9,11 +9,15 @@ typedef enum {
 } ENCODER_DIR;
 
 typedef struct {
-    volatile long long temp_count; //保存实时计数值
+    volatile int32_t temp_count; // 保存实时计数值，32位读写适配MSPM0内核
     int count;         				//根据定时器时间更新的计数值
     ENCODER_DIR dir;            	 //旋转方向
     int ALLcount;  //开机到现在总的编码器计数
 } ENCODER_RES;
+
+/* 编码器正方向统一系数：小车向前时左右轮计数都应为正 */
+#define ENCODER_LEFT_FORWARD_SIGN   (1)
+#define ENCODER_RIGHT_FORWARD_SIGN  (-1)
 
 
 void encoder_init(void);

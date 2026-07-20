@@ -9,7 +9,11 @@
 
 
 
-extern volatile float pitch,roll,yaw;   //??��???? Euler Angles
+extern volatile float pitch, roll, yaw;
+extern volatile float Filter_out;
+extern volatile uint32_t mpu_yaw_update_count;
+extern volatile uint32_t mpu_yaw_last_ms;
+extern volatile uint8_t mpu_yaw_valid;
 
 extern volatile float yawBias,pitchBias,rollBias;
 extern volatile float calibratedYaw, calibratedPitch, calibratedRoll;
@@ -21,7 +25,7 @@ typedef struct
 	float Xoffset;
 	float Yoffset;
 	float Zoffset;
-} Bias_t; 
+} Bias_t;
 
 
 

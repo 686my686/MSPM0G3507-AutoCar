@@ -18,10 +18,10 @@
 #define PID_DEF_KI (-0.030f) //0.06
 #define PID_DEF_KD (-000.8f) //0.5
 
-/* 速度闭环PID参数（正值，err=target-actual，编码器反馈mm/s） */
-#define SPD_KP_POS (0.7f)   /* 适度Kp，增量式Kp×Δerr，0.03太小基本没反应 */
-#define SPD_KI_POS (0.04f)  /* 小积分维持驱动力，0.12导致累积过冲→前后摩擦 */
-#define SPD_KD_POS (0.20f)  /* 适度阻尼，太大压垮PWM，太小不抗振荡 */
+/* 速度闭环PID参数：误差等于目标速度减实际速度，单位为mm/s。 */
+#define SPD_KP_POS (0.30f)  /* 增量式速度环比例项，按mm/s误差计算 */
+#define SPD_KI_POS (0.025f) /* 小积分逐步建立维持目标速度所需PWM */
+#define SPD_KD_POS (0.00f)  /* 初始关闭微分，避免量化噪声引起前后抖动 */
 
 
 
@@ -35,71 +35,70 @@
 
 #define veer_p  (-046.0f)
 #define veer_i  (-0.00f)
-#define veer_d  (-0.00f) 
+#define veer_d  (-0.00f)
 
 
 #define k230_p  (00.90f)
 #define k230_i  (0.00f)
-#define k230_d  (0.01f) 
+#define k230_d  (0.01f)
 
 #define k230_p1  (00.5f)
 #define k230_i1  (0.00f)
-#define k230_d1  (0.001f) 
+#define k230_d1  (0.001f)
 
 #define k230_p2  (005.5f)
 #define k230_i2  (0.00f)
-#define k230_d2  (0.001f) 
+#define k230_d2  (0.001f)
 
 
 #define k230_p3  (000.3f)
 #define k230_i3  (0.00f)
-#define k230_d3  (0.001f) 
+#define k230_d3  (0.001f)
 #define RIGHT	 (-90)
 #define LEFT	(90)
 #define BACK	 (180)
 
 typedef struct _pid
 {
-    float target_val; // 目标值
-    float output_val; // 输出值
-    float pwm_output; // PWM输出值
-    float Kp, Ki, Kd; // 定义比例、积分、微分系数
-    float err;        // 定义偏差值
-    float err_last;   // 定义上一个偏差值
-
-    float err_next; // 定义下一个偏差值, 增量式
-    float integral; // 定义积分值，位置式
+    float target_val; /* 目标值 */
+    float output_val; /* 位置式PID输出 */
+    float pwm_output; /* 增量式PID累计PWM输出 */
+    float Kp, Ki, Kd; /* 比例、积分、微分系数 */
+    float err;        /* 当前误差 */
+    float err_last;   /* 前两次误差 */
+    float err_next;   /* 上一次误差 */
+    float integral;   /* 位置式PID积分值 */
 } PID_t;
 
 typedef struct
 {
-    float SetPoint;   // 设定目标Desired value
-    float Proportion; // 比例常数Proportional Const
-    float Integral;   // 积分常数Integral Const
-    float Derivative; // 微分常数Derivative Const
-    float LastError;  // Error[-1]
-    float PrevError;  // Error[-2]
-    float SumError;   // Sums of Errors
+    float SetPoint;
+    float Proportion; /* 比例系数 */
+    float Integral;
+    float Derivative; /* 微分系数 */
+    float LastError;  /* 上一次误差 */
+    float PrevError;  /* 前两次误差 */
+    float SumError;   /* 误差累加值 */
 } PID;
 
 typedef struct _motor_data_t
 {
-    float speed_mm_s[2];  // 输入值，编码器计算速度
-    float speed_pwm[2];   // 输出值，PID计算出PWM值
-    int16_t speed_set[2]; // 速度设置值
+    float speed_mm_s[2];
+    float speed_pwm[2];
+    int16_t speed_set[2];
 } motor_data_t;
 
 typedef struct{
-    float Kp;    //比例系数
-    float Ki;   //积分系数
-	float Kd;     //微分系数
-    float Err; //偏差值
-	float LastErr;//上一个偏差
-	float PenultErr; //下一个偏差
-    float Integral;//积分和
-    float Target;//目标值
-	float PID_out; //PID输出
-	
+    float Kp;
+    float Ki;
+	float Kd;
+    float Err;
+	float LastErr;
+	float PenultErr;
+    float Integral;
+    float Target;
+	float PID_out; /* PID输出 */
+
 	int8_t KP_polarity;
 	int8_t KI_polarity;
 	int8_t KD_polarity;

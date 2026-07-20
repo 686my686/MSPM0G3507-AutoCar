@@ -3,11 +3,16 @@
 #define Pi 3.14159265
 volatile short angle[3];
 volatile short accel[3];
-volatile float pitch,roll,yaw;   //欧拉角 Euler Angles
+volatile float pitch, roll, yaw;
 
 volatile float kal_mpu_out;
 
 volatile float Filter_out;
+
+/* MPU6050航向数据状态，供直线控制器判断数据是否新鲜。 */
+volatile uint32_t mpu_yaw_update_count = 0;
+volatile uint32_t mpu_yaw_last_ms = 0;
+volatile uint8_t mpu_yaw_valid = 0;
 
 volatile float Filter_out_last;
 
@@ -19,70 +24,66 @@ volatile float error;
 
 volatile float gyro_x,gyro_y,gyro_z,accel_z;
 volatile float Accel_Angle_X,Accel_Angle_Y;
-uint8_t Way_Angle=2; 
+uint8_t Way_Angle=2;
 Bias_t Angle;
 
-const int CALIB_SAMPLES = 2; // 采样次数  Number of samples
-float Angle_Balance,Gyro_Balance,Gyro_Turn; //平衡倾角 平衡陀螺仪 转向陀螺仪
+const int CALIB_SAMPLES = 2;
+float Angle_Balance,Gyro_Balance,Gyro_Turn;
 float Acceleration_Z;
-// 计算偏移量   Number of samples
+
 volatile float yawBias = 0, pitchBias = 0, rollBias = 0;
 
 volatile float calibratedYaw = 0, calibratedPitch = 0, calibratedRoll = 0;
 
 void AngleOffsetCalc(void)
 {
-	
-		
+
+
     for (int i = 0; i < CALIB_SAMPLES; i++)
     {
-        
-			
-			
+
+
+
 //        printf("yaw:%.2f, pitch:%.2f, roll:%.2f\r\n", yaw, pitch, roll);
         calibratedYaw += calibratedYaw;
 
-       
+
 //        delay_ms(20);
     }
 //    printf("yawsum:%d\r\n", (int)yawSum);
-    // 计算偏移量   Calculate offset
+
     calibratedYaw = calibratedYaw / CALIB_SAMPLES;
-		
-    
+
+
 //    printf("yawBias:%.2f, pitchBias:%.2f, rollBias:%.2f", yawBias, pitchBias, rollBias);
 }
-//获取已校准的角度  Get the calibrated angle
+
 void Get_CalibratedAngles(void)
 {
-	
-	
-	
-	
-    if(Filter_out < -0.5)
+    if (!mpu_yaw_valid)
+    {
+        return;
+    }
+
+    if (Filter_out < 0.0f)
     {
         calibratedYaw = -Filter_out;
     }
-    else if(Filter_out >= 0.5)
-    {
-        calibratedYaw = 360 - Filter_out; //车头朝前yaw顺时针为负数  逆时针为正数 yaw clockwise is negative
-    }
     else
     {
-        calibratedYaw = 0; 	//过滤掉0和360附近的数据  Filter out data near 0 and 360
-			
+        calibratedYaw = 360.0f - Filter_out;
+        if (calibratedYaw >= 360.0f)
+        {
+            calibratedYaw = 0.0f;
+        }
     }
-
 }
 
-float get_Filter(float 	Yaw_Err)	
+float get_Filter(float Yaw_Err)
 {
-	
-	
-	float a=0.0150;
-
-	Yaw_Err_Lowout=(1-a)*Yaw_Err+a*Yaw_Err_Lowout_last;//使得波形更加平滑，滤除高频干扰
-	Yaw_Err_Lowout_last=Yaw_Err_Lowout;
+	/* 一阶低通滤波：保留65%的历史量，吸收35%的新测量。 */
+	Yaw_Err_Lowout = 0.35f * Yaw_Err + 0.65f * Yaw_Err_Lowout_last;
+	Yaw_Err_Lowout_last = Yaw_Err_Lowout;
 //			if(error<00.55)
 //	{
 //		erro_sumr+=error;
@@ -99,83 +100,90 @@ float get_Filter(float 	Yaw_Err)
 
 void Get_EulerAngles(void)
 {
-    //获取欧拉角 Get Euler angles
-   
+    float new_pitch;
+    float new_roll;
+    float new_yaw;
 
 
-	
+
+
+
 //	    for (int i = 0; i < CALIB_SAMPLES; i++)
 //    {
-         mpu_dmp_get_data(&pitch,&roll,&yaw);
-			
-			
-	  Filter_out=get_Filter(yaw);
-			
-			
+    /* 只有DMP返回成功时才发布新航向，避免错误帧参与控制。 */
+    if (mpu_dmp_get_data(&new_pitch, &new_roll, &new_yaw) == 0)
+    {
+        pitch = new_pitch;
+        roll = new_roll;
+        yaw = new_yaw;
+        Filter_out = new_yaw;
+        mpu_yaw_last_ms = Get_Time();
+        mpu_yaw_update_count++;
+        mpu_yaw_valid = 1;
+    }
+
+
 //			calibratedYaw= Filter_out+Filter_out_last;
 //			Filter_out_last=Filter_out;
-			
-			
+
+
 //        printf("yaw:%.2f, pitch:%.2f, roll:%.2f\r\n", yaw, pitch, roll);
 //        calibratedYaw += calibratedYaw;
 
-       
+
 ////        delay_ms(20);
 ////    }
 //	  calibratedYaw = calibratedYaw / CALIB_SAMPLES;
-	
-	
 
 
 
-       
 
 
-	
 
-	
-	
+
+
+
+
+
+
 
 //		calibratedYaw=Filter_out+180;
 
-//	  delay_ms(10);//根据设置的采样率，不可设置延时过大 According to the set sampling rate, the delay cannot be set too large
+
 //	printf("pitch :%3.2f roll :%3.2f yaw:%3.2f\r\n",pitch,roll,Filter_out);
 
 }
 
-//角度环PID控制 Angle ring PID control
+
 float dir_kp = 7.50,dir_ki=0.00,dir_kd = 5.00;
 int Integral_Max = 300; //300
 int pid_max = 1000; //3000
 float Dir_PID(float error)
 { //5*20/1000*188
     float result = 0;
-    static int16_t err_last = 0; //上次的误差初始为0  Last error
-    static float Integral = 0; // 初始化积分项 Initialize integral term
+    static int16_t err_last = 0;
+    static float Integral = 0;
 
-//   if(error == 0)          
+//   if(error == 0)
 //   {
-//       Integral = 0;          //积分清零   Integral cleared
+
 //   }
-    Integral += error;           // 更新积分项，并进行限幅 Update the integral term and limit it
-    if (Integral > Integral_Max) Integral = Integral_Max;               //积分限幅 Integral limiting
-    if (Integral < -Integral_Max) Integral = -Integral_Max;             //积分限幅 Integral limiting
+    Integral += error;
+    if (Integral > Integral_Max) Integral = Integral_Max;
+    if (Integral < -Integral_Max) Integral = -Integral_Max;
 
-    // 位置式 PID
+
     result = dir_kp * error +dir_ki*Integral+ dir_kd * (error - err_last);
-  
-	 err_last = error;       // 更新积分项，并进行限幅 Update the integral term and limit it
 
-    // 对输出进行限幅Output limiting value
-    if (result > Integral_Max) result = pid_max;  
+	 err_last = error;
+
+
+    if (result > Integral_Max) result = pid_max;
     if (result < -Integral_Max) result = -pid_max;
-	printf("result:%3.2f\r\n",result);
     return -result;
 }
 
-/* 角度→速度校正PID（双环架构外环）
- * 输入：角度误差(°)  输出：速度校正值(mm/s)，范围±150
- * 与Dir_PID的区别：输出是速度目标而非直接PWM */
+
 float Yaw_To_Speed(float angle_error)
 {
     static float integral = 0;
@@ -192,7 +200,7 @@ float Yaw_To_Speed(float angle_error)
 
     return correction;
 }
-//将航向角限制为 0-360 度（防止因加减运算导致航向角范围超过 0-360 度）
+
 //Limit the heading_angle to 0-360 degrees(to prevent the range of heading_angle over 0-360 degrees beacuse of Addition or subtraction operations )
 float navigetion_0_360_limit(float angle)
 {
@@ -208,16 +216,16 @@ float navigetion_0_360_limit(float angle)
 		return temp;
 }
 
-//计算 0-360 导航坐标系中的小圆弧偏差（逆时针方向的负圆弧角度为正，顺时针方向的为负）
-//Calculate the minor arc deviation in the 0-360 Navigation Coordinate System (Counterclockwise negative arc Angle is Positive, Clockwise is Negative)  
-//计算 0-360 导航坐标系中的小圆弧偏差（逆时针方向的负圆弧角度为正，顺时针方向的为负）
-//Calculate the minor arc deviation in the 0-360 Navigation Coordinate System (Counterclockwise negative arc Angle is Positive, Clockwise is Negative)  
-float get_minor_arc(float azimuth,float headingAngle)  
+
+//Calculate the minor arc deviation in the 0-360 Navigation Coordinate System (Counterclockwise negative arc Angle is Positive, Clockwise is Negative)
+
+//Calculate the minor arc deviation in the 0-360 Navigation Coordinate System (Counterclockwise negative arc Angle is Positive, Clockwise is Negative)
+float get_minor_arc(float azimuth,float headingAngle)
 {
-    float angle_err = 0.0; 
-    if(azimuth >= 180 + headingAngle)  
+    float angle_err = 0.0;
+    if(azimuth >= 180 + headingAngle)
     {
-        angle_err = azimuth - headingAngle - 360;  
+        angle_err = azimuth - headingAngle - 360;
     }
     else if(headingAngle > 180 + azimuth)
     {
@@ -231,55 +239,48 @@ float get_minor_arc(float azimuth,float headingAngle)
 }
 
 
- /**************************************************************************
-Function: Get angle
-Input   : way：The algorithm of getting angle 1：DMP  2：kalman  3：Complementary filtering
-Output  : none
-函数功能：获取角度	
-入口参数：way：获取角度的算法 1：DMP  2：卡尔曼 3：互补滤波
-返回  值：无
-**************************************************************************/	
-void Get_Angle(uint8_t way)
-{ 
 
-	if(way==1)                           //DMP的读取在	数据采集中断读取，严格遵循时序要求
-	{	
+void Get_Angle(uint8_t way)
+{
+
+	if(way==1)
+	{
 		if( mpu_dmp_get_data(&pitch,&roll,&yaw) == 0 )
-        { 
+        {
           //  printf("\r\npitch =%d\r\n", (int)pitch);
            // printf("\r\nroll =%d\r\n", (int)roll);
 //            printf("\r\nyaw =%3.2f\r\n", yaw);
-        }      
-        delay_ms(10);//根据设置的采样率，不可设置延时过大
-	}			
+        }
+        delay_ms(10);
+	}
 	else
 	{
-		
+
 		MPU6050ReadGyro(angle);
 		MPU6050ReadAcc(accel);
-		Accel_Angle_X=atan2(accel[0],accel[2])*180/Pi;     //计算倾角，转换单位为度	
-		Accel_Angle_Y=atan2(accel[1],accel[2])*180/Pi;     //计算倾角，转换单位为度
+		Accel_Angle_X=atan2(accel[0],accel[2])*180/Pi;
+		Accel_Angle_Y=atan2(accel[1],accel[2])*180/Pi;
 		accel_z=accel[2]*1.962/32768;
-		gyro_z = angle[2] * 2000 / 32768; // 陀螺仪量程转换
+		gyro_z = angle[2] * 2000 / 32768;
 		delay_ms(10);
-		if(Way_Angle==2)		  	
+		if(Way_Angle==2)
 		{
-			pitch= -Kalman_Filter_x(Accel_Angle_X,gyro_x);//卡尔曼滤波
+			pitch= -Kalman_Filter_x(Accel_Angle_X,gyro_x);//鍗″皵鏇兼护娉?
 			roll = -Kalman_Filter_y(Accel_Angle_Y,gyro_y);
 
 
 		}
-		else if(Way_Angle==3) 
-		{  
-			 pitch = -Complementary_Filter_x(Accel_Angle_X,gyro_x);//互补滤波
+		else if(Way_Angle==3)
+		{
+			 pitch = -Complementary_Filter_x(Accel_Angle_X,gyro_x);
 			 roll = -Complementary_Filter_y(Accel_Angle_Y,gyro_y);
 		}
-		Angle_Balance=pitch;                              //更新平衡倾角
-		Gyro_Turn=angle[2];                                 //更新转向角速度
-		Acceleration_Z=accel[2];                           //更新Z轴加速度计
-		
+		Angle_Balance=pitch;
+		Gyro_Turn=angle[2];
+		Acceleration_Z=accel[2];
+
 	}
 
-} 
+}
 
 

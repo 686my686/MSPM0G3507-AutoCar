@@ -14,7 +14,7 @@ extern volatile float Second_yaw;
 
 #define yaw_p  (-10.0f)
 #define yaw_i  (-0.05)
-#define yaw_d  (00.0f) 
+#define yaw_d  (00.0f)
 
 extern uint8_t mode3_stop ;
 
@@ -45,9 +45,17 @@ extern volatile float second_yaw_flag3;
 extern volatile float second_yaw_flag4;
 
 uint8_t switch_mode();
-int abs(int p);
+float abs_float(float p);
 
 void mode_1(void);
+void Straight_Control_Start(float target_yaw);
+void Straight_Control_Stop(void);
+void Straight_Control_20ms(void);
+
+extern volatile uint8_t straight_control_active;
+extern volatile uint8_t straight_control_fault;
+extern volatile float straight_yaw_error;
+extern volatile float straight_speed_correction;
 void mode_2(void);
 void mode_3(void);
 void mode_3old(void);
@@ -60,7 +68,7 @@ int Turn(int gyro_Z,int RC);
 int calc_min_angle_direction(int now, int targ);
 
 void turn_pid(int16_t dir, int8_t v);
-int My_abs(int x);
+int My_abs_float(int x);
 
 
 
